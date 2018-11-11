@@ -28,8 +28,14 @@ class ViewController: UIViewController {
 
     //METHODS
     
-    @IBAction func buttonPressed(_ sender: UIButton) {
-     
+    @IBAction func buttonTouched(_ sender: AnyObject) {
+        guard let button = sender as? UIView else {
+            return
+        }
+        
+        labelTitle.font = UIFont.boldSystemFont(ofSize: 34.0)
+        imageViewDiamond.image = UIImage(named: "ruby-image")
+        
         let controller = UIAlertController(title: "I am Rich", message: """
                                                     I am Rich,
                                                     I deserve it.
@@ -46,18 +52,25 @@ class ViewController: UIViewController {
         let action2 = UIAlertAction(title: "Borrar", style: .destructive, handler: { (action) in
             print("He pulsado el botón de Borrar.")
         })
-
+        
         controller.addAction(action2)
         
         let action3 = UIAlertAction(title: "Cancelar", style: .cancel) { _ in
-            print("He pulsado el botón de Cancelar.")
+            self.imageViewDiamond.image = UIImage(named: "emerald")
         }
-
+        
         controller.addAction(action3)
         
-        self.show(controller, sender: nil)
-                
+        if let presenter = controller.popoverPresentationController {
+            presenter.sourceView = button
+            presenter.sourceRect = button.bounds
+        }
+ 
+        self.present(controller, animated: true, completion: nil)
+        //self.show(controller, sender: nil)
+        //} catch {
+        //assertionFailure("Parece que usas un iPad")
+        //}
     }
-    
 }
 
